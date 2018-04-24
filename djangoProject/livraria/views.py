@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from .models import *
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 # Create your views here.
@@ -16,4 +16,9 @@ def livro_list(request, template_name='livro_list.html'):
     livros = {'lista': livro}
     return render(request, template_name, livros)
 
-
+def livro_new(request, tamplate_name='livro_form.html'):
+    form = LivroForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('listar_livros')
+    return render(request, tamplate_name, {'form': form})
